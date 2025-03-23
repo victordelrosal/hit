@@ -11,6 +11,16 @@
             padding: 0;
             height: 100%;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+        }
+        #videoWrapper {
+            width: 100%;
+            max-width: 375px; /* Emulate mobile width */
+            aspect-ratio: 9 / 16; /* Fixed aspect ratio for vertical display */
+            position: relative;
         }
         #video {
             width: 100%;
@@ -49,11 +59,13 @@
     </style>
 </head>
 <body>
-    <video id="video" autoplay playsinline></video>
-    <button id="muteButton">
-        <img src="icons/sound-on.png" alt="Sound On">
-    </button>
-    <div id="videoNumber">1</div>
+    <div id="videoWrapper">
+        <video id="video" autoplay playsinline></video>
+        <button id="muteButton">
+            <img src="icons/sound-on.png" alt="Sound On">
+        </button>
+        <div id="videoNumber">1</div>
+    </div>
     <script>
         let current = 1;
         const totalVideos = 28;
