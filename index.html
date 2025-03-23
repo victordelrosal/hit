@@ -127,6 +127,9 @@
             } else if (e.key === 'ArrowUp') {
                 // Up arrow: previous video
                 loadVideo(current - 1);
+            } else if (e.key === ' ') {
+                // Spacebar: pause/play video
+                togglePlayPause();
             }
         });
 
@@ -156,6 +159,18 @@
                 muteButton.innerHTML = '<img src="icons/sound-off.png" alt="Sound Off">';
             }
         });
+
+        // Toggle play/pause functionality
+        function togglePlayPause() {
+            if (videoElement.paused) {
+                videoElement.play();
+            } else {
+                videoElement.pause();
+            }
+        }
+
+        // Add click event listener for mobile to toggle play/pause
+        videoElement.addEventListener('click', togglePlayPause);
     </script>
 </body>
 </html>
