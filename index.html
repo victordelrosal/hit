@@ -18,7 +18,7 @@
         }
         #muteButton, #videoNumber {
             position: absolute;
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.35);
             color: white;
             border: none;
             width: 40px; /* Set equal width and height */
@@ -186,6 +186,17 @@
 
         // Add click event listener for mobile to toggle play/pause
         videoElement.addEventListener('click', togglePlayPause);
+
+        // Add click event listener to video number to prompt for a new video number
+        videoNumber.addEventListener('click', function() {
+            const newVideoNumber = prompt("Enter video number (1-28):");
+            const videoIndex = parseInt(newVideoNumber, 10);
+            if (!isNaN(videoIndex) && videoIndex >= 1 && videoIndex <= totalVideos) {
+                loadVideo(videoIndex);
+            } else {
+                alert("Invalid video number. Please enter a number between 1 and 28.");
+            }
+        });
     </script>
 </body>
 </html>
