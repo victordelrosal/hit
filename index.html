@@ -16,17 +16,27 @@
             height: 100%;
             object-fit: cover;
         }
-        #muteButton {
+        #muteButton, #videoNumber {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.25);
             color: white;
             border: none;
-            padding: 10px;
+            width: 40px; /* Set equal width and height */
+            height: 40px; /* Set equal width and height */
             cursor: pointer;
             z-index: 1000;
-            border-radius: 50%; /* Add this line to make the button circular */
+            border-radius: 50%; /* Make the button circular */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #muteButton {
+            top: 10px;
+            right: 10px;
+        }
+        #videoNumber {
+            top: 10px;
+            left: 10px;
         }
         #muteButton img {
             width: 20px;
@@ -39,11 +49,13 @@
     <button id="muteButton">
         <img src="icons/sound-on.png" alt="Sound On">
     </button>
+    <div id="videoNumber">1</div>
     <script>
         let current = 1;
         const totalVideos = 28;
         const videoElement = document.getElementById('video');
         const muteButton = document.getElementById('muteButton');
+        const videoNumber = document.getElementById('videoNumber');
         const nextVideoElement = document.createElement('video');
         nextVideoElement.style.display = 'none';
         document.body.appendChild(nextVideoElement);
@@ -60,6 +72,9 @@
             // Set the source and force immediate playback
             videoElement.src = `videos/${current}.mp4`;
             videoElement.load();
+            
+            // Update video number overlay
+            videoNumber.textContent = current;
             
             // Use play() with Promise handling for better autoplay reliability
             const playPromise = videoElement.play();
