@@ -218,12 +218,12 @@
 
         // Add click event listener to video number to prompt for a new video number
         videoNumber.addEventListener('click', function() {
-            const newVideoNumber = prompt("Enter video number (1-28):");
+            const newVideoNumber = prompt(`Enter video number (1-${totalVideos}):`);
             const videoIndex = parseInt(newVideoNumber, 10);
             if (!isNaN(videoIndex) && videoIndex >= 1 && videoIndex <= totalVideos) {
                 loadVideo(videoIndex);
             } else {
-                alert("Invalid video number. Please enter a number between 1 and 28.");
+                alert(`Invalid video number. Please enter a number between 1 and ${totalVideos}.`);
             }
         });
     </script>
