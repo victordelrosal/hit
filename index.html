@@ -27,11 +27,17 @@
             cursor: pointer;
             z-index: 1000;
         }
+        #muteButton img {
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </head>
 <body>
     <video id="video" autoplay playsinline></video>
-    <button id="muteButton">Mute</button>
+    <button id="muteButton">
+        <img src="icons/sound-on.png" alt="Sound On">
+    </button>
     <script>
         let current = 1;
         const totalVideos = 28;
@@ -143,10 +149,10 @@
         muteButton.addEventListener('click', function() {
             if (videoElement.muted) {
                 videoElement.muted = false;
-                muteButton.textContent = 'Mute';
+                muteButton.innerHTML = '<img src="icons/sound-on.png" alt="Sound On">';
             } else {
                 videoElement.muted = true;
-                muteButton.textContent = 'Unmute';
+                muteButton.innerHTML = '<img src="icons/sound-off.png" alt="Sound Off">';
             }
         });
     </script>
