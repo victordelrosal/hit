@@ -16,14 +16,27 @@
             height: 100%;
             object-fit: cover;
         }
+        #muteButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
-    <video id="video" autoplay muted playsinline></video>
+    <video id="video" autoplay playsinline></video>
+    <button id="muteButton">Mute</button>
     <script>
         let current = 1;
         const totalVideos = 28;
         const videoElement = document.getElementById('video');
+        const muteButton = document.getElementById('muteButton');
         const nextVideoElement = document.createElement('video');
         nextVideoElement.style.display = 'none';
         document.body.appendChild(nextVideoElement);
@@ -124,6 +137,17 @@
         // Auto-play next video on end
         videoElement.addEventListener('ended', function() {
             loadVideo(current + 1);
+        });
+
+        // Mute button functionality
+        muteButton.addEventListener('click', function() {
+            if (videoElement.muted) {
+                videoElement.muted = false;
+                muteButton.textContent = 'Mute';
+            } else {
+                videoElement.muted = true;
+                muteButton.textContent = 'Unmute';
+            }
         });
     </script>
 </body>
