@@ -19,11 +19,14 @@
     </style>
 </head>
 <body>
-    <video id="video" autoplay></video>
+    <video id="video" autoplay muted playsinline></video>
     <script>
         let current = 1;
         const totalVideos = 28;
         const videoElement = document.getElementById('video');
+        const nextVideoElement = document.createElement('video');
+        nextVideoElement.style.display = 'none';
+        document.body.appendChild(nextVideoElement);
 
         function loadVideo(index) {
             if (index < 1) {
@@ -33,9 +36,40 @@
             } else {
                 current = index;
             }
+            
+            // Set the source and force immediate playback
             videoElement.src = `videos/${current}.mp4`;
             videoElement.load();
-            videoElement.play();
+            
+            // Use play() with Promise handling for better autoplay reliability
+            const playPromise = videoElement.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Playback started successfully
+                    // Preload next video for instant transition
+                    preloadNextVideo();
+                })
+                .catch(error => {
+                    // Auto-play was prevented
+                    console.log("Autoplay prevented:", error);
+                    // Try playing muted as fallback
+                    videoElement.muted = true;
+                    videoElement.play();
+                });
+            }
+        }
+        
+        function preloadNextVideo() {
+            // Calculate the next video index
+            let nextIndex = current + 1;
+            if (nextIndex > totalVideos) {
+                nextIndex = 1;
+            }
+            
+            // Preload next video
+            nextVideoElement.src = `videos/${nextIndex}.mp4`;
+            nextVideoElement.load();
         }
 
         // Initial load
