@@ -105,6 +105,9 @@
             <div id="whatsappShare" class="footerButton">
                 <img src="icons/whatsapp.png" alt="Share on WhatsApp">
             </div>
+            <div id="facebookShare" class="footerButton"> <!-- Added Facebook share button -->
+                <img src="icons/facebook.png" alt="Share on Facebook">
+            </div>
             <div id="copyLink" class="footerButton">
                 <img src="icons/link.png" alt="Copy Link">
             </div>
@@ -259,6 +262,7 @@
         });
 
         const whatsappShare = document.getElementById('whatsappShare');
+        const facebookShare = document.getElementById('facebookShare');
         const copyLink = document.getElementById('copyLink');
 
         // Function to get query parameters from the URL
@@ -290,6 +294,12 @@
             const videoURL = getVideoURL();
             const whatsappURL = `https://wa.me/?text=${encodeURIComponent(videoURL)}`;
             window.open(whatsappURL, '_blank');
+        });
+
+        facebookShare.addEventListener('click', function() {
+            const videoURL = getVideoURL();
+            const facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(videoURL)}`;
+            window.open(facebookURL, '_blank');
         });
 
         copyLink.addEventListener('click', function() {
