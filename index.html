@@ -261,8 +261,29 @@
         const whatsappShare = document.getElementById('whatsappShare');
         const copyLink = document.getElementById('copyLink');
 
+        // Function to get query parameters from the URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Check if a specific video is shared via the URL
+        const sharedVideo = getQueryParam('video');
+        if (sharedVideo) {
+            const videoIndex = parseInt(sharedVideo, 10);
+            if (!isNaN(videoIndex) && videoIndex >= 1 && videoIndex <= totalVideos) {
+                loadVideo(videoIndex); // Load the shared video in the UI
+            } else {
+                console.warn(`Invalid video number in URL: ${sharedVideo}`);
+                loadVideo(1); // Fallback to the first video
+            }
+        } else {
+            loadVideo(1); // Default to the first video if no query parameter is provided
+        }
+
+        // Update the getVideoURL function to include the query parameter
         function getVideoURL() {
-            return `${window.location.origin}/videos/${current}.mp4`;
+            return `${window.location.origin}?video=${current}`;
         }
 
         whatsappShare.addEventListener('click', function() {
