@@ -69,6 +69,29 @@
             width: 20px;
             height: 20px;
         }
+        #footerButtons {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .footerButton {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .footerButton img {
+            width: 24px;
+            height: 24px;
+        }
     </style>
 </head>
 <body>
@@ -78,6 +101,14 @@
             <img src="icons/sound-on.png" alt="Sound On">
         </button>
         <div id="videoNumber">1</div>
+        <div id="footerButtons">
+            <div id="whatsappShare" class="footerButton">
+                <img src="icons/whatsapp.png" alt="Share on WhatsApp">
+            </div>
+            <div id="copyLink" class="footerButton">
+                <img src="icons/link.png" alt="Copy Link">
+            </div>
+        </div>
     </div>
     <script>
         let current = 1;
@@ -225,6 +256,28 @@
             } else {
                 alert(`Invalid video number. Please enter a number between 1 and ${totalVideos}.`);
             }
+        });
+
+        const whatsappShare = document.getElementById('whatsappShare');
+        const copyLink = document.getElementById('copyLink');
+
+        function getVideoURL() {
+            return `${window.location.origin}/videos/${current}.mp4`;
+        }
+
+        whatsappShare.addEventListener('click', function() {
+            const videoURL = getVideoURL();
+            const whatsappURL = `https://wa.me/?text=${encodeURIComponent(videoURL)}`;
+            window.open(whatsappURL, '_blank');
+        });
+
+        copyLink.addEventListener('click', function() {
+            const videoURL = getVideoURL();
+            navigator.clipboard.writeText(videoURL).then(() => {
+                alert('Link copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy link: ', err);
+            });
         });
     </script>
 </body>
