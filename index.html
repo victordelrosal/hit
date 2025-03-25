@@ -76,7 +76,7 @@
             transform: translateX(-50%);
             display: flex;
             gap: 10px;
-            background: rgba(255, 255, 255, 0.5); /* Change to semi-transparent white */
+            background: rgba(255, 255, 255, 0.35); /* Change to semi-transparent white */
             padding: 5px 10px;
             border-radius: 20px;
         }
@@ -268,7 +268,7 @@
         }
 
         // Check if a specific video is shared via the URL
-        const sharedVideo = getQueryParam('video');
+        const sharedVideo = getQueryParam('v'); // Changed 'video' to 'v'
         if (sharedVideo) {
             const videoIndex = parseInt(sharedVideo, 10);
             if (!isNaN(videoIndex) && videoIndex >= 1 && videoIndex <= totalVideos) {
@@ -281,9 +281,9 @@
             loadVideo(1); // Default to the first video if no query parameter is provided
         }
 
-        // Update the getVideoURL function to include the query parameter
+        // Update the getVideoURL function to include the streamlined query parameter
         function getVideoURL() {
-            return `${window.location.origin}?video=${current}`;
+            return `${window.location.origin}?v=${current}`; // Changed 'video' to 'v'
         }
 
         whatsappShare.addEventListener('click', function() {
