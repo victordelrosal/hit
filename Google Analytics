@@ -1,0 +1,157 @@
+To add analytics to your codebase and track which videos are played and shared the most, you can integrate a service like **Google Analytics** or any other analytics platform (e.g., Mixpanel, Amplitude). Below is a step-by-step guide to implement this:
+
+---
+
+### 1. **Set Up Google Analytics**
+- Create a Google Analytics account at [Google Analytics](https://analytics.google.com/analytics/web/).
+- Set up a property for your website and get the **Measurement ID** (e.g., `G-XXXXXXXXXX`).
+
+---
+
+### 2. **Add the Google Analytics Script**
+Insert the Google Analytics tracking script into the `<head>` section of your HTML file:
+
+```html
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-XXXXXXXXXX'); // Replace with your Measurement ID
+</script>
+```
+
+Replace `G-XXXXXXXXXX` with your actual Measurement ID.
+
+---
+
+### 3. **Track Video Plays**
+Add an event to track when a video is played. Modify the `loadVideo` function to include a Google Analytics event:
+
+```javascript
+function loadVideo(index) {
+    if (index < 1) {
+        current = totalVideos;
+    } else if (index > totalVideos) {
+        current = 1;
+    } else {
+        current = index;
+    }
+    
+    // Set the source and force immediate playback
+    videoElement.src = `videos/${current}.mp4`;
+    videoElement.load();
+    
+    // Update video number overlay
+    videoNumber.textContent = current;
+    
+    // Track video play event
+    gtag('event', 'video_play', {
+        'event_category': 'Videos',
+        'event_label': `Video ${current}`,
+        'value': current
+    });
+
+    // Use play() with Promise handling for better autoplay reliability
+    const playPromise = videoElement.play();
+    
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // Playback started successfully
+            // Preload next video for instant transition
+            preloadNextVideo();
+        })
+        .catch(error => {
+            // Auto-play was prevented
+            console.log("Autoplay prevented:", error);
+            // Try playing muted as fallback
+            videoElement.muted = true;
+            videoElement.play();
+        });
+    }
+}
+```
+
+---
+
+### 4. **Track Sharing Events**
+Update the sharing event listeners to include analytics tracking. For example:
+
+#### WhatsApp Share:
+```javascript
+whatsappShare.addEventListener('click', function() {
+    const videoURL = getVideoURL();
+    const whatsappURL = `https://wa.me/?text=${encodeURIComponent(videoURL)}`;
+    window.open(whatsappURL, '_blank');
+
+    // Track WhatsApp share event
+    gtag('event', 'share', {
+        'event_category': 'Sharing',
+        'event_label': `WhatsApp - Video ${current}`,
+        'value': current
+    });
+});
+```
+
+#### Facebook Share:
+```javascript
+facebookShare.addEventListener('click', function() {
+    const videoURL = getVideoURL();
+    const facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(videoURL)}`;
+    window.open(facebookURL, '_blank');
+
+    // Track Facebook share event
+    gtag('event', 'share', {
+        'event_category': 'Sharing',
+        'event_label': `Facebook - Video ${current}`,
+        'value': current
+    });
+});
+```
+
+#### Copy Link:
+```javascript
+copyLink.addEventListener('click', function() {
+    const videoURL = getVideoURL();
+    navigator.clipboard.writeText(videoURL).then(() => {
+        alert('Link copied to clipboard!');
+
+        // Track Copy Link event
+        gtag('event', 'share', {
+            'event_category': 'Sharing',
+            'event_label': `Copy Link - Video ${current}`,
+            'value': current
+        });
+    }).catch(err => {
+        console.error('Failed to copy link: ', err);
+    });
+});
+```
+
+---
+
+### 5. **Track Page Views**
+If you want to track page views (e.g., when the user lands on the page), you can add this to the `<script>` in the `<head>`:
+
+```javascript
+gtag('event', 'page_view', {
+    'page_title': document.title,
+    'page_location': window.location.href,
+    'page_path': window.location.pathname
+});
+```
+
+---
+
+### 6. **View Analytics**
+- Log in to your Google Analytics dashboard.
+- Navigate to **Reports** > **Events** to see the tracked events (e.g., `video_play`, `share`).
+- You can filter by event category, label, or value to analyze which videos are played or shared the most.
+
+---
+
+This setup will allow you to track video plays, shares, and other user interactions on your website.
+
+Similar code found with 1 license type
