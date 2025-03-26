@@ -176,36 +176,50 @@
         loadVideo(1);
 
         // Touch events for mobile
+        let touchstartX = 0;
         let touchstartY = 0;
+        let touchendX = 0;
         let touchendY = 0;
 
         videoElement.addEventListener('touchstart', function(e) {
+            touchstartX = e.changedTouches[0].screenX;
             touchstartY = e.changedTouches[0].screenY;
         });
 
         videoElement.addEventListener('touchend', function(e) {
+            touchendX = e.changedTouches[0].screenX;
             touchendY = e.changedTouches[0].screenY;
             handleSwipe();
         });
 
         function handleSwipe() {
             const threshold = 50;
-            if (touchendY < touchstartY - threshold) {
+            // Vertical swipes
+            if (touchendY < touchstartY - threshold && Math.abs(touchendX - touchstartX) < threshold) {
                 // Swipe up: next video
                 loadVideo(current + 1);
-            } else if (touchendY > touchstartY + threshold) {
+            } else if (touchendY > touchstartY + threshold && Math.abs(touchendX - touchstartX) < threshold) {
                 // Swipe down: previous video
+                loadVideo(current - 1);
+            }
+            
+            // Horizontal swipes
+            if (touchendX < touchstartX - threshold && Math.abs(touchendY - touchstartY) < threshold) {
+                // Swipe left: next video
+                loadVideo(current + 1);
+            } else if (touchendX > touchstartX + threshold && Math.abs(touchendY - touchstartY) < threshold) {
+                // Swipe right: previous video
                 loadVideo(current - 1);
             }
         }
 
         // Keyboard events for desktop
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowDown') {
-                // Down arrow: next video
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                // Down or Right arrow: next video
                 loadVideo(current + 1);
-            } else if (e.key === 'ArrowUp') {
-                // Up arrow: previous video
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                // Up or Left arrow: previous video
                 loadVideo(current - 1);
             } else if (e.key === ' ') {
                 // Spacebar: pause/play video
