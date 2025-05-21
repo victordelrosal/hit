@@ -28,6 +28,8 @@
             justify-content: center;
             align-items: center;
             background-color: black;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
         }
         #videoWrapper {
             width: 100%;
@@ -39,6 +41,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: opacity 0.3s ease-in-out;
+            cursor: pointer;
         }
         #muteButton, #videoNumber {
             position: absolute;
@@ -53,6 +57,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
         }
         #muteButton {
             top: 10px;
@@ -79,6 +85,8 @@
             background: rgba(255, 255, 255, 0.35); /* Change to semi-transparent white */
             padding: 5px 10px;
             border-radius: 20px;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
         }
         .footerButton {
             width: 40px;
@@ -91,6 +99,14 @@
         .footerButton img {
             width: 24px;
             height: 24px;
+            transition: filter 0.2s;
+        }
+        #muteButton img {
+            transition: filter 0.2s;
+        }
+        #muteButton:hover img,
+        .footerButton:hover img {
+            filter: brightness(1.2);
         }
     </style>
 </head>
@@ -133,17 +149,26 @@
             } else {
                 current = index;
             }
-            
+
+            // Fade out current video while loading new one
+            videoElement.style.opacity = 0;
+
             // Set the source and force immediate playback
             videoElement.src = `videos/${current}.mp4`;
             videoElement.load();
-            
+
             // Update video number overlay
             videoNumber.textContent = current;
-            
+
+            const fadeIn = () => {
+                videoElement.style.opacity = 1;
+                videoElement.removeEventListener('playing', fadeIn);
+            };
+            videoElement.addEventListener('playing', fadeIn);
+
             // Use play() with Promise handling for better autoplay reliability
             const playPromise = videoElement.play();
-            
+
             if (playPromise !== undefined) {
                 playPromise.then(_ => {
                     // Playback started successfully
