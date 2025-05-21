@@ -18,6 +18,7 @@
     <meta name="twitter:title" content="Swing Mechanics Videos | Baseball | Softball | Rounders ⚾️" />
     <meta name="twitter:description" content="Instructional swing mechanics videos | Baseball | Softball | Rounders ⚾️" />
     <meta name="twitter:image" content="https://hit.kluxy.app/images/preview.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body, html {
             margin: 0;
@@ -27,15 +28,19 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: black;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+            background: linear-gradient(180deg, #121212, #000000);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
                 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+            color: #fff;
         }
         #videoWrapper {
             width: 100%;
             max-width: 375px; /* Emulate mobile width */
             aspect-ratio: 9 / 16; /* Fixed aspect ratio for vertical display */
             position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
         }
         #video {
             width: 100%;
@@ -46,19 +51,20 @@
         }
         #muteButton, #videoNumber {
             position: absolute;
-            background: rgba(255, 255, 255, 0.35);
-            color: white;
-            border: none;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
             width: 40px; /* Set equal width and height */
             height: 40px; /* Set equal width and height */
             cursor: pointer;
             z-index: 1000;
-            border-radius: 50%; /* Make the button circular */
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(6px);
             box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            transition: background 0.2s;
         }
         #muteButton {
             top: 10px;
@@ -67,9 +73,8 @@
         #videoNumber {
             top: 10px;
             left: 10px;
-            color: black; /* Change the font color */
-            font-family: Arial, sans-serif; /* Change the font type */
-            font-size: 16px; /* Adjust the font size if needed */
+            font-weight: 600;
+            font-size: 16px;
         }
         #muteButton img {
             width: 20px;
@@ -81,10 +86,11 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.35); /* Change to semi-transparent white */
-            padding: 5px 10px;
-            border-radius: 20px;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 24px;
             backdrop-filter: blur(6px);
             box-shadow: 0 2px 6px rgba(0,0,0,0.4);
         }
@@ -95,6 +101,8 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.2s;
         }
         .footerButton img {
             width: 24px;
@@ -103,6 +111,10 @@
         }
         #muteButton img {
             transition: filter 0.2s;
+        }
+        #muteButton:hover,
+        .footerButton:hover {
+            background: rgba(255,255,255,0.15);
         }
         #muteButton:hover img,
         .footerButton:hover img {
